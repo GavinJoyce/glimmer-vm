@@ -285,7 +285,11 @@ export class BasicComponents extends RenderTest {
   })
   'invoking curried component with attributes via angle brackets (invocation classes merge)'() {
     this.registerHelper('hash', (_positional, named) => named);
-    this.registerComponent('Glimmer', 'Foo', '<p class="default" ...attributes>hello world!</p>');
+    this.registerComponent(
+      'Glimmer',
+      'Foo',
+      '<p class="default" ...attributes>hello world!</p><p ...attributes class="default">hello world!</p>'
+    );
     this.render({
       layout: '<@stuff.Foo class="invocation" />',
       args: {
@@ -293,7 +297,9 @@ export class BasicComponents extends RenderTest {
       },
     });
 
-    this.assertHTML(`<div><p class="default invocation">hello world!</p></div>`);
+    this.assertHTML(
+      `<div><p class="default invocation">hello world!</p><p class="invocation default">hello world!</p></div>`
+    );
     this.assertStableRerender();
   }
 
